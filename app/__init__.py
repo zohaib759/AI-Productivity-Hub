@@ -11,6 +11,9 @@ def create_app():
     app.config.from_object(Config)
     db.init_app(app)
     migrate.init_app(app, db)
+    from app.auth import auth
+    app.register_blueprint(auth)
+
     from app.models import user
     @app.route('/')
     def home():
