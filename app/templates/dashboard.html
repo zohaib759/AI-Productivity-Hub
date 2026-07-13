@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+
+<h2 class="mb-4">
+    Welcome, {{ current_user.username }} 👋
+</h2>
+
+<div class="row">
+
+    <div class="col-md-3 mb-3">
+        <div class="card shadow-sm">
+            <div class="card-body text-center">
+                <h5>📝 Notes</h5>
+                <h2>0</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+        <div class="card shadow-sm">
+            <div class="card-body text-center">
+                <h5>✅ Tasks</h5>
+                <h2>0</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+        <div class="card shadow-sm">
+            <div class="card-body text-center">
+                <h5>✔ Completed</h5>
+                <h2>0</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+        <div class="card shadow-sm">
+            <div class="card-body text-center">
+                <h5>🤖 AI Actions</h5>
+                <h2>0</h2>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="row mt-4">
+
+    <div class="col-md-6">
+
+        <div class="card shadow-sm">
+
+            <div class="card-header">
+                Recent Tasks
+            </div>
+
+            <div class="card-body">
+                No tasks yet.
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-6">
+
+        <div class="card shadow-sm">
+
+            <div class="card-header">
+                Recent Notes
+            </div>
+
+            <div class="card-body">
+                No notes yet.
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="mt-5">
+
+    <h4>Quick Actions</h4>
+
+    <a href="#" class="btn btn-primary">
+        + New Task
+    </a>
+
+    <a href="#" class="btn btn-success">
+        + New Note
+    </a>
+
+    <a href="#" class="btn btn-dark">
+        🤖 AI Assistant
+    </a>
+
+</div>
+
+{% endblock %}
