@@ -2,8 +2,7 @@ from flask import Blueprint
 
 notes = Blueprint(
     "notes",
-    __name__,
-    template_folder="../templates"
+    __name__
 )
 
 from app.notes import routes
