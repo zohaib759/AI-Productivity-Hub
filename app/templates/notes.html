@@ -20,13 +20,16 @@
 
             <p>{{ note.content }}</p>
 
-            <a href="#" class="btn btn-warning btn-sm">
-                Edit
-            </a>
+<a href="{{ url_for('notes.edit_note', id=note.id) }}"
+   class="btn btn-warning btn-sm">
+    Edit
+  </a>
 
-            <a href="#" class="btn btn-danger btn-sm">
-                Delete
-            </a>
+<a href="{{ url_for('notes.delete_note', id=note.id) }}"
+   class="btn btn-danger btn-sm"
+   onclick="return confirm('Delete this note?');">
+    Delete
+</a>
         </div>
     </div>
 
