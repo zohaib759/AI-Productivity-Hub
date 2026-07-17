@@ -24,6 +24,8 @@ def create_app():
 
     login_manager.init_app(app)
     login_manager.login_view = "auth.login"
+    from app.profile import profile
+    app.register_blueprint(profile)
     from app.tasks import tasks
     app.register_blueprint(tasks)
     from app.notes import notes
