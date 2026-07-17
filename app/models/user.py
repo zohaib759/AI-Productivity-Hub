@@ -13,3 +13,10 @@ notes = db.relationship(
     lazy=True,
     cascade="all, delete-orphan"
 )
+
+task = db.relationship(
+    "Task",
+    backref="author",
+    lazy=True,
+    cascade="all, delete-orphan"
+)

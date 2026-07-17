@@ -16,7 +16,7 @@
     <div class="container">
 
         <a class="navbar-brand" href="/">
-            🤖 AI Productivity Hub
+             AI Productivity Hub
         </a>
 
         <button class="navbar-toggler" type="button"
@@ -41,7 +41,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="{{ url_for('tasks.all_tasks') }}">
                         Tasks
                     </a>
                 </li>
@@ -83,7 +83,19 @@
 
     </div>
 </nav>
-
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show">
+                {{ message }}
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="alert">
+                </button>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
 <div class="container mt-4">
     {% block content %}
     {% endblock %}
