@@ -1,6 +1,7 @@
 from flask import render_template, redirect, url_for, flash
 from flask_login import login_required, current_user
-
+from werkzeug.security import check_password_hash, generate_password_hash
+from app.profile.form import ProfileForm, PasswordForm
 from app.profile import profile
 from app.profile.form import ProfileForm
 from app import db
@@ -67,5 +68,40 @@ def edit_profile():
 
     return render_template(
         "edit_profile.html",
+        form=form
+    )
+
+@profile.route("/profile/change-password", methods=["GET", "POST"])
+@login_required
+def change_password():
+
+    form = PasswordForm()
+
+    if form.validate_on_submit():
+
+        # Verify current password
+        if not check_password_hash(
+            current_user.password_hash,
+            form.current_password.data
+        ):
+            flash("Current password is incorrect.", "danger")
+            return render_template(
+                "change_password.html",
+                form=form
+            )
+
+        # Save new password
+        current_user.password_hash = generate_password_hash(
+            form.new_password.data
+        )
+
+        db.session.commit()
+
+        flash("Password changed successfully!", "success")
+
+        return redirect(url_for("profile.my_profile"))
+
+    return render_template(
+        "change_password.html",
         form=form
     )
