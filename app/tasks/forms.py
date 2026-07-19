@@ -1,6 +1,14 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, SelectField, DateField, SubmitField
+from wtforms import (
+    StringField,
+    TextAreaField,
+    SelectField,
+    DateField,
+    TimeField,
+    SubmitField
+)
 from wtforms.validators import DataRequired
+
 
 class TaskForm(FlaskForm):
 
@@ -9,20 +17,27 @@ class TaskForm(FlaskForm):
         validators=[DataRequired()]
     )
 
-    description = TextAreaField("Description")
+    description = TextAreaField(
+        "Description"
+    )
 
     priority = SelectField(
         "Priority",
         choices=[
-            ("Low", "Low"),
+            ("High", "High"),
             ("Medium", "Medium"),
-            ("High", "High")
+            ("Low", "Low")
         ]
     )
 
     due_date = DateField(
         "Due Date",
         format="%Y-%m-%d"
+    )
+
+    due_time = TimeField(
+        "Due Time",
+        format="%H:%M"
     )
 
     submit = SubmitField("Save Task")

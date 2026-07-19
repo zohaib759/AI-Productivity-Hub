@@ -11,9 +11,87 @@
         <h2>My Tasks</h2>
 
         <a href="{{ url_for('tasks.create_task') }}"
-           class="btn btn-success">
+           class="btn btn-primary">
             + New Task
         </a>
+        <form method="GET" class="row mb-4">
+
+    <div class="col-md-4">
+
+        <input
+            type="text"
+            name="search"
+            class="form-control"
+            placeholder="Search Tasks..."
+            value="{{ search }}">
+
+    </div>
+
+    <div class="col-md-3">
+
+        <select
+            name="priority"
+            class="form-select">
+
+            <option value="All">All Priorities</option>
+
+            <option value="High"
+            {% if priority=="High" %}selected{% endif %}>
+                High
+            </option>
+
+            <option value="Medium"
+            {% if priority=="Medium" %}selected{% endif %}>
+                Medium
+            </option>
+
+            <option value="Low"
+            {% if priority=="Low" %}selected{% endif %}>
+                Low
+            </option>
+
+        </select>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <select
+            name="status"
+            class="form-select">
+
+            <option value="All">All Status</option>
+
+            <option value="Completed"
+            {% if status=="Completed" %}selected{% endif %}>
+                Completed
+            </option>
+
+            <option value="Pending"
+            {% if status=="Pending" %}selected{% endif %}>
+                Pending
+            </option>
+
+        </select>
+
+    </div>
+
+    <div class="col-md-2">
+
+        <button
+            class="btn btn-primary w-100">
+
+            Search
+
+        </button>
+
+    </div>
+
+</form>
+<a href="{{ url_for('tasks.all_tasks') }}"
+   class="btn btn-secondary mt-2">
+    Reset Filters
+</a>
 
     </div>
 
@@ -25,47 +103,104 @@
 
             <div class="card-body">
 
-                <h4>{{ task.title }}</h4>
+                <div class="d-flex justify-content-between">
 
-                <p>{{ task.description }}</p>
+                    <h4>{{ task.title }}</h4>
 
-                <p>
-                    <strong>Priority:</strong>
-                    {{ task.priority }}
+                    {% if task.completed %}
+
+                        <span class="badge bg-success">
+                            Completed
+                        </span>
+
+                    {% else %}
+
+                        <span class="badge bg-secondary">
+                            Pending
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+                {% if task.description %}
+
+                <p class="mt-2">
+                    {{ task.description }}
                 </p>
 
-                <p>
-                    <strong>Due Date:</strong>
-                    {{ task.due_date }}
-                </p>
-                <p>
-    <strong>Status:</strong>
+                {% endif %}
 
-    {% if task.completed %}
-        <span class="badge bg-success">Completed</span>
-    {% else %}
-        <span class="badge bg-warning text-dark">Pending</span>
-    {% endif %}
-</p>
+                <p>
+
+                    {% if task.priority == "High" %}
+
+                        <span class="badge bg-danger">
+                            High
+                        </span>
+
+                    {% elif task.priority == "Medium" %}
+
+                        <span class="badge bg-warning text-dark">
+                            Medium
+                        </span>
+
+                    {% else %}
+
+                        <span class="badge bg-success">
+                            Low
+                        </span>
+
+                    {% endif %}
+
+                </p>
+
+                {% if task.due_date %}
+
+                <p>
+
+                    📅
+                    {{ task.due_date.strftime("%d %b %Y") }}
+
+                    {% if task.due_time %}
+
+                        •
+                        🕒
+                        {{ task.due_time.strftime("%I:%M %p") }}
+
+                    {% endif %}
+
+                </p>
+
+                {% endif %}
+
+                <hr>
+
+                <a href="{{ url_for('tasks.complete_task', id=task.id) }}"
+                   class="btn btn-success btn-sm">
+
+                    {% if task.completed %}
+                        Undo
+                    {% else %}
+                        Complete
+                    {% endif %}
+
+                </a>
+
                 <a href="{{ url_for('tasks.edit_task', id=task.id) }}"
-   class="btn btn-warning btn-sm">
-    Edit
-</a>
+                   class="btn btn-warning btn-sm">
 
-<a href="{{ url_for('tasks.delete_task', id=task.id) }}"
-   class="btn btn-danger btn-sm"
-   onclick="return confirm('Delete this task?');">
-    Delete
-</a>
+                    Edit
 
-<a href="{{ url_for('tasks.complete_task', id=task.id) }}"
-   class="btn btn-success btn-sm">
-    {% if task.completed %}
-        Undo
-    {% else %}
-        Complete
-    {% endif %}
-</a>
+                </a>
+
+                <a href="{{ url_for('tasks.delete_task', id=task.id) }}"
+                   class="btn btn-danger btn-sm"
+                   onclick="return confirm('Delete this task?')">
+
+                    Delete
+
+                </a>
 
             </div>
 
@@ -77,14 +212,7 @@
 
         <div class="alert alert-info">
 
-            No tasks yet.
-
-            <br><br>
-
-            <a href="{{ url_for('tasks.create_task') }}"
-               class="btn btn-primary">
-                Create Your First Task
-            </a>
+            No tasks found.
 
         </div>
 

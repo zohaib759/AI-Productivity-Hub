@@ -1,44 +1,71 @@
 {% extends "base.html" %}
 
-{% block title %}Notes{% endblock %}
+{% block title %}My Notes{% endblock %}
 
 {% block content %}
 
-<h2 class="mb-4">My Notes</h2>
+<div class="container mt-4">
 
-<a href="{{ url_for('notes.create_note') }}" class="btn btn-primary mb-4">
-    + Create Note
-</a>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>📝 My Notes</h2>
 
-{% if notes %}
-
-    {% for note in notes %}
-
-    <div class="card mb-3 shadow-sm">
-        <div class="card-body">
-            <h4>{{ note.title }}</h4>
-
-            <p>{{ note.content }}</p>
-
-<a href="{{ url_for('notes.edit_note', id=note.id) }}"
-   class="btn btn-warning btn-sm">
-    Edit
-  </a>
-
-<a href="{{ url_for('notes.delete_note', id=note.id) }}"
-   class="btn btn-danger btn-sm"
-   onclick="return confirm('Delete this note?');">
-    Delete
-</a>
-        </div>
+        <a href="{{ url_for('notes.create_note') }}" class="btn btn-primary">
+            + Create Note
+        </a>
     </div>
 
-    {% endfor %}
+    {% if notes %}
 
-{% else %}
+        {% for note in notes %}
 
-<p>No notes yet.</p>
+        <div class="card shadow mb-3">
 
-{% endif %}
+            <div class="card-body">
+
+                <h4>{{ note.title }}</h4>
+
+                <p>{{ note.content }}</p>
+
+                <a href="{{ url_for('notes.edit_note', id=note.id) }}"
+                   class="btn btn-warning btn-sm">
+                    Edit
+                </a>
+
+                <a href="{{ url_for('notes.delete_note', id=note.id) }}"
+                   class="btn btn-danger btn-sm">
+                    Delete
+                </a>
+
+                <!-- AI Button -->
+
+                <button
+                    class="btn btn-info btn-sm summarize-btn"
+                    data-content="{{ note.content|e }}">
+
+                    ✨ Summarize
+
+                </button>
+
+                <!-- AI Result -->
+
+                <div class="summary-result mt-3"></div>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="alert alert-info">
+
+            No notes yet.
+
+        </div>
+
+    {% endif %}
+
+</div>
 
 {% endblock %}

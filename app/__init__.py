@@ -22,6 +22,8 @@ def create_app():
     db.init_app(app)
     migrate.init_app(app, db)
 
+    from app.ai import ai
+    app.register_blueprint(ai)
     login_manager.init_app(app)
     login_manager.login_view = "auth.login"
     from app.profile import profile

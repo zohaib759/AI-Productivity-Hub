@@ -6,132 +6,233 @@
 
 <div class="container mt-4">
 
-    <h2>Welcome, {{ current_user.username }} 👋</h2>
+    <h2 class="mb-4">
+        Welcome, {{ current_user.username }} 👋
+    </h2>
 
-    <p class="text-muted">
-        Here's an overview of your productivity.
-    </p>
+    <!-- Statistics -->
 
-    <div class="row mt-4">
+    <div class="row">
 
-        <div class="col-md-3">
-            <div class="card text-center shadow-sm">
+        <div class="col-md-3 mb-3">
+
+            <div class="card text-white bg-primary shadow">
+
                 <div class="card-body">
+
                     <h5>Total Notes</h5>
+
                     <h2>{{ total_notes }}</h2>
+
                 </div>
+
             </div>
+
         </div>
 
-        <div class="col-md-3">
-            <div class="card text-center shadow-sm">
+        <div class="col-md-3 mb-3">
+
+            <div class="card text-white bg-success shadow">
+
                 <div class="card-body">
+
                     <h5>Total Tasks</h5>
+
                     <h2>{{ total_tasks }}</h2>
+
                 </div>
+
             </div>
+
         </div>
 
-        <div class="col-md-3">
-            <div class="card text-center shadow-sm">
+        <div class="col-md-3 mb-3">
+
+            <div class="card text-white bg-info shadow">
+
                 <div class="card-body">
+
                     <h5>Completed</h5>
+
                     <h2>{{ completed_tasks }}</h2>
+
                 </div>
+
             </div>
+
         </div>
 
-        <div class="col-md-3">
-            <div class="card text-center shadow-sm">
+        <div class="col-md-3 mb-3">
+
+            <div class="card text-white bg-warning shadow">
+
                 <div class="card-body">
+
                     <h5>Pending</h5>
+
                     <h2>{{ pending_tasks }}</h2>
+
                 </div>
+
             </div>
+
         </div>
 
     </div>
 
-    <div class="row mt-5">
+    <!-- Today's Tasks -->
 
-        <div class="col-md-6">
+    <div class="card shadow mt-4">
 
-            <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
 
-                <div class="card-header">
-                    <h4>Recent Notes</h4>
-                </div>
-
-                <div class="card-body">
-
-                    {% if recent_notes %}
-
-                        <ul class="list-group">
-
-                            {% for note in recent_notes %}
-
-                            <li class="list-group-item">
-                                <strong>{{ note.title }}</strong><br>
-                                {{ note.content[:60] }}...
-                            </li>
-
-                            {% endfor %}
-
-                        </ul>
-
-                    {% else %}
-
-                        <p>No notes yet.</p>
-
-                    {% endif %}
-
-                </div>
-
-            </div>
+            <h4 class="mb-0">📅 Today's Tasks</h4>
 
         </div>
 
-        <div class="col-md-6">
+        <div class="card-body">
 
-            <div class="card shadow-sm">
+            {% if today_tasks %}
 
-                <div class="card-header">
-                    <h4>Recent Tasks</h4>
+                <ul class="list-group">
+
+                    {% for task in today_tasks %}
+
+                    <li class="list-group-item">
+
+                        <strong>{{ task.title }}</strong>
+
+                        {% if task.priority == "High" %}
+                            <span class="badge bg-danger float-end">High</span>
+                        {% elif task.priority == "Medium" %}
+                            <span class="badge bg-warning text-dark float-end">Medium</span>
+                        {% else %}
+                            <span class="badge bg-success float-end">Low</span>
+                        {% endif %}
+
+                        {% if task.description %}
+                        <br>
+                        {{ task.description }}
+                        {% endif %}
+
+                        {% if task.due_time %}
+                        <br>
+                        🕒 {{ task.due_time.strftime("%I:%M %p") }}
+                        {% endif %}
+
+                    </li>
+
+                    {% endfor %}
+
+                </ul>
+
+            {% else %}
+
+                <div class="alert alert-success">
+
+                    🎉 No tasks due today!
+
                 </div>
 
-                <div class="card-body">
+            {% endif %}
 
-                    {% if recent_tasks %}
+        </div>
 
-                        <ul class="list-group">
+    </div>
 
-                            {% for task in recent_tasks %}
+    <!-- Overdue Tasks -->
 
-                            <li class="list-group-item d-flex justify-content-between">
+    <div class="card shadow mt-4">
 
-                                <span>{{ task.title }}</span>
+        <div class="card-header bg-danger text-white">
 
-                                {% if task.completed %}
-                                    <span class="badge bg-success">Completed</span>
-                                {% else %}
-                                    <span class="badge bg-warning text-dark">Pending</span>
-                                {% endif %}
+            <h4 class="mb-0">🚨 Overdue Tasks</h4>
 
-                            </li>
+        </div>
 
-                            {% endfor %}
+        <div class="card-body">
 
-                        </ul>
+            {% if overdue_tasks %}
 
-                    {% else %}
+                <ul class="list-group">
 
-                        <p>No tasks yet.</p>
+                    {% for task in overdue_tasks %}
 
-                    {% endif %}
+                    <li class="list-group-item list-group-item-danger">
+
+                        <strong>{{ task.title }}</strong>
+
+                        <br>
+
+                        Due:
+                        {{ task.due_date.strftime("%d %b %Y") }}
+
+                        {% if task.due_time %}
+                            at {{ task.due_time.strftime("%I:%M %p") }}
+                        {% endif %}
+
+                    </li>
+
+                    {% endfor %}
+
+                </ul>
+
+            {% else %}
+
+                <div class="alert alert-info">
+
+                    No overdue tasks.
 
                 </div>
 
-            </div>
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    <!-- Recent Notes -->
+
+    <div class="card shadow mt-4">
+
+        <div class="card-header bg-secondary text-white">
+
+            <h4 class="mb-0">📝 Recent Notes</h4>
+
+        </div>
+
+        <div class="card-body">
+
+            {% if recent_notes %}
+
+                <ul class="list-group">
+
+                    {% for note in recent_notes %}
+
+                    <li class="list-group-item">
+
+                        <strong>{{ note.title }}</strong>
+
+                        {% if note.content %}
+                        <br>
+                        {{ note.content[:100] }}...
+                        {% endif %}
+
+                    </li>
+
+                    {% endfor %}
+
+                </ul>
+
+            {% else %}
+
+                <div class="alert alert-light">
+
+                    No notes available.
+
+                </div>
+
+            {% endif %}
 
         </div>
 

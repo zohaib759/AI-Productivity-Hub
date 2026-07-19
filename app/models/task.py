@@ -5,21 +5,28 @@ class Task(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
 
-    title = db.Column(db.String(200), nullable=False)
+    title = db.Column(
+        db.String(200),
+        nullable=False
+    )
 
     description = db.Column(db.Text)
+
+    priority = db.Column(
+        db.String(20),
+        nullable=False,
+        default="Medium"
+    )
+
+    due_date = db.Column(db.Date)
+
+    # NEW FIELD
+    due_time = db.Column(db.Time)
 
     completed = db.Column(
         db.Boolean,
         default=False
     )
-
-    priority = db.Column(
-        db.String(20),
-        default="Medium"
-    )
-
-    due_date = db.Column(db.Date)
 
     created_at = db.Column(
         db.DateTime,
